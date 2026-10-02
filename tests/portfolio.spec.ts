@@ -39,6 +39,50 @@ test('every case study loads directly, refreshes and links onward', async ({ pag
   }
 });
 
+test('robotic arms uses real photographs and playable, opt-in demonstration clips', async ({page,request})=>{
+  test.setTimeout(90_000);
+  await page.goto('/');
+  const card=page.locator('.project-arms .project-image');
+  await expect(card.locator('img')).toHaveAttribute('src','/media/robotic-arms/completed-arms-card.webp');
+  await expect(card).not.toContainText('CONCEPT DIAGRAM');
+  await card.click();
+  await expect(page.locator('h1')).toContainText('Ten 6-DOF robotic arms');
+  await expect(page.locator('.case-photo img')).toBeVisible();
+  await page.getByRole('link',{name:'See photos & demonstrations ↓'}).click();
+  await expect(page.locator('#media-heading')).toBeInViewport();
+  await expect(page.locator('.case-gallery video')).toHaveCount(4);
+  await expect(page.locator('.case-gallery img')).toHaveCount(4);
+  for(const img of await page.locator('.case-photo img,.case-gallery img').all()){
+    await img.scrollIntoViewIfNeeded();
+    await expect.poll(()=>img.evaluate((el:HTMLImageElement)=>el.complete&&el.naturalWidth>0)).toBeTruthy();
+  }
+  for(const video of await page.locator('video').all()){
+    await expect(video).toHaveAttribute('preload','none');
+    expect(await video.getAttribute('autoplay')).toBeNull();
+    expect(await video.getAttribute('controls')).not.toBeNull();
+    expect(await video.getAttribute('playsinline')).not.toBeNull();
+    const poster=await video.getAttribute('poster');
+    expect((await request.get(poster!)).ok()).toBeTruthy();
+    await video.evaluate((el:HTMLVideoElement)=>el.load());
+    await expect.poll(()=>video.evaluate((el:HTMLVideoElement)=>el.readyState)).toBeGreaterThanOrEqual(2);
+    expect(await video.evaluate((el:HTMLVideoElement)=>el.duration)).toBeGreaterThan(4);
+    await video.evaluate(async(el:HTMLVideoElement)=>{el.muted=true;await el.play();});
+    await expect.poll(()=>video.evaluate((el:HTMLVideoElement)=>el.currentTime)).toBeGreaterThan(0);
+    await video.evaluate((el:HTMLVideoElement)=>el.pause());
+  }
+  for(const width of [375,768,1440]){
+    await page.setViewportSize({width,height:1000});
+    await page.reload();
+    for(const img of await page.locator('.case-gallery img').all()){
+      await img.scrollIntoViewIfNeeded();
+      await expect.poll(()=>img.evaluate((el:HTMLImageElement)=>el.complete&&el.naturalWidth>0)).toBeTruthy();
+    }
+    await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));
+    expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBeTruthy();
+    await page.screenshot({path:`test-results/arms-${width}.png`,fullPage:true});
+  }
+});
+
 test('robot supports pose controls, dragging, keyboard and reset', async ({ page }) => {
   await page.goto('/');
   const robot=page.locator('[data-robot]');

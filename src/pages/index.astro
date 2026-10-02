@@ -31,7 +31,11 @@ const experience = [
     <p class="sr-only" role="status" data-filter-status></p>
     <div class="project-grid">
       {projects.map(({ id, data }) => <article class={`project-card project-${data.illustration}`} data-category={data.category}>
-        <a class="project-image" href={`/projects/${id}/`} aria-label={`Explore ${data.title}`}><div class="art-meta"><span>0{data.order} / {data.category.toUpperCase()}</span><span class="art-arrow" aria-hidden="true">↗</span></div><Illustration kind={data.illustration}/><span class="art-caption">CONCEPT DIAGRAM / NOT PROJECT FOOTAGE</span></a>
+        <a class:list={['project-image', { 'has-photo': data.cover }]} href={`/projects/${id}/`} aria-label={`Explore ${data.title}`}>
+          <div class="art-meta"><span>0{data.order} / {data.category.toUpperCase()}</span><span class="art-arrow" aria-hidden="true">↗</span></div>
+          {data.cover ? <img class="project-photo" src={data.cover.thumbnail ?? data.cover.src} alt={data.cover.alt} width={data.cover.width} height={data.cover.height} loading="lazy" decoding="async" /> : <Illustration kind={data.illustration}/>}
+          <span class="art-caption">{data.cover ? 'FROM THE WORKBENCH / PROJECT PHOTOGRAPH' : 'CONCEPT DIAGRAM / NOT PROJECT FOOTAGE'}</span>
+        </a>
         <div class="project-text"><p class="eyebrow">{data.organisation}</p><h3><a href={`/projects/${id}/`}>{data.title} <span aria-hidden="true">↗</span></a></h3><p>{data.summary}</p><ul class="tags" aria-label={`${data.title} technologies`}>{data.tags.slice(0,4).map((tag)=><li>{tag}</li>)}</ul></div>
       </article>)}
     </div>

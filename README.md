@@ -49,6 +49,10 @@ media:
 
 These are illustrative filenames, not existing files. Do not add these entries until their files exist. For speech, supply checked WebVTT captions. For silent demonstrations, use a descriptive caption. Video playback is user-initiated, with `preload="none"`. Optimise images, keep video clips short and do not commit raw camera recordings. The current project drawings intentionally remain useful without media.
 
+The robotic-arms case study now uses five supplied project photographs and four short clips. Its optional `cover` metadata supplies the homepage thumbnail and case-study photograph; projects without a cover keep their concept drawings. Published copies live in `public/media/robotic-arms/`: metadata-stripped WebP photos and 720p/30 fps H.264 MP4 clips, with HDR converted to SDR. Clips contain no audio tracks and are labelled silent; originals remain outside this repository. The gallery supports native playback controls, inline mobile playback, descriptive captions and full-image links. Do not copy the raw staging folder into the repository.
+
+Keep `/` and the existing `/projects/.../` routes stable when updating content: these URLs may already be in submitted job applications.
+
 ### Suggested media checklist
 
 - Waddle: assembly photo, clearly labelled simulation clip, optional approved CAD image.
@@ -78,7 +82,7 @@ npm test
 
 Tests cover direct route loads, filters, resume download, robot controls, keyboard access, reduced motion, no JavaScript, failed WebGL, internal links, responsive overflow and axe accessibility checks. They save review screenshots under `test-results/` (ignored by Git). Playwright uses local Chromium and SwiftShader for a software-rendered WebGL test. Automated checks complement, not replace, visual review.
 
-The local implementation was tested on 2 October 2026: all 12 browser tests passed, all five content pages passed the automated WCAG A/AA checks, and 375/768/1440px layouts were reviewed. Type checking reported zero errors/warnings/hints. The production build contains six HTML pages including the 404 page. The Windows localhost preview returned HTTP 200. Tests used an existing Chromium binary via the optional `PORTFOLIO_CHROMIUM` environment variable; ordinary setups can use the Playwright install command above.
+The local implementation was tested on 2 October 2026: all 13 browser tests passed, including real robotic-arm image loading and playback of all four clips; all five content pages passed the automated WCAG A/AA checks, and 375/768/1440px layouts were reviewed. Type checking reported zero errors/warnings/hints. The production build contains six HTML pages including the 404 page. The Windows localhost preview returned HTTP 200. Tests used an existing Chromium binary via the optional `PORTFOLIO_CHROMIUM` environment variable; ordinary setups can use the Playwright install command above.
 
 Astro 7 can automatically background its preview when invoked by an agent. The browser-test command uses `--ignore-lock` to keep its managed server in the foreground. To stop an agent-started background preview, run `npm run preview -- stop`; a normal foreground session stops with Ctrl+C. The preview is loopback-only, not a public website.
 
