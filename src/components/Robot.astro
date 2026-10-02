@@ -1,0 +1,46 @@
+---
+import Illustration from './Illustration.astro';
+---
+<div class="robot-workbench" data-robot>
+  <div class="bench-top"><span class="eyebrow">FIG. 01 / THE WORKBENCH</span><span class="bench-dot" aria-hidden="true"></span></div>
+  <div class="robot-viewport" data-viewport>
+    <div class="robot-fallback" data-fallback><Illustration kind="waddle" /></div>
+    <div class="robot-canvas" data-canvas></div>
+    <span class="model-note">A little curiosity.<br />A lot of moving parts.</span>
+    <span class="model-axis" aria-hidden="true">Y ↑<br />└── X</span>
+  </div>
+  <div class="robot-controls" data-controls hidden aria-label="Interactive robot controls">
+    <button type="button" data-pose="tilt">Head tilt <span aria-hidden="true">↗</span></button>
+    <button type="button" data-pose="crouch">Crouch <span aria-hidden="true">↓</span></button>
+    <button type="button" data-pose="reset" aria-label="Reset robot pose and rotation">Reset <span aria-hidden="true">↺</span></button>
+  </div>
+  <div class="bench-bottom"><span data-robot-status role="status">Concept illustration · not actual robot CAD</span><span data-drag-hint hidden>DRAG TO ROTATE ↔</span></div>
+</div>
+<script>
+  const root = document.querySelector<HTMLElement>('[data-robot]');
+  if (root) {
+    const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let dispose: (() => void) | undefined;
+    let version = 0;
+    async function initialise() {
+      const attempt = ++version;
+      dispose?.();
+      dispose = undefined;
+      if (motion.matches || !root) return;
+      try {
+        const { mountRobot } = await import('../scripts/robot');
+        if (attempt === version && !motion.matches) dispose = mountRobot(root);
+      } catch { /* Static drawing remains usable if WebGL or chunk loading fails. */ }
+    }
+    const observer = new IntersectionObserver((entries) => {
+      if (entries.some((entry) => entry.isIntersecting)) {
+        void initialise();
+        observer.disconnect();
+      }
+    }, { rootMargin: '100px' });
+    observer.observe(root);
+    motion.addEventListener('change', initialise);
+    window.addEventListener('pageshow', (event) => { if (event.persisted) void initialise(); });
+    window.addEventListener('pagehide', () => { version++; dispose?.(); observer.disconnect(); });
+  }
+</script>

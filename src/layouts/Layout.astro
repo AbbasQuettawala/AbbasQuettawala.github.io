@@ -1,0 +1,33 @@
+---
+import '../styles/global.css';
+interface Props { title?: string; description?: string; }
+const { title = 'Abbas Quettawala — Robotics, mechatronics & AI', description = 'The workbench of Abbas Quettawala. Hands-on robotics, embedded systems and machine learning, from physical builds to learning agents.' } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+<!doctype html>
+<html lang="en-AU">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#f6f4ed" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:title" content={title} /><meta property="og:description" content={description} />
+    <meta property="og:type" content="website" /><meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header container">
+      <a class="wordmark" href="/" aria-label="Abbas Quettawala home">aq<span class="logo-dot">.</span><span class="wordmark-label">ABBAS<br />QUETTAWALA</span></a>
+      <nav aria-label="Main navigation">
+        <a href="/#work">Work</a><a href="/#about">About</a>
+        <a class="nav-contact" href="/#contact">Let’s talk <span aria-hidden="true">↗</span></a>
+      </nav>
+    </header>
+    <main id="main"><slot /></main>
+    <footer class="site-footer container"><span>© {new Date().getFullYear()} Abbas Quettawala</span><span>Built with curiosity. Based in Melbourne.</span><a href="#main">Back to top ↑</a></footer>
+  </body>
+</html>

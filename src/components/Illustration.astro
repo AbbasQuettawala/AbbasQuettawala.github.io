@@ -1,0 +1,58 @@
+---
+interface Props { kind: 'waddle' | 'arms' | 'manumentor' | 'hollow-knight'; }
+const { kind } = Astro.props;
+---
+<svg class={`technical-art art-${kind}`} viewBox="0 0 640 400" fill="none" aria-hidden="true" focusable="false">
+  {kind === 'waddle' && <>
+    <path d="M70 300 320 160 570 300 320 440Z M120 270 370 410 M170 242 420 383 M220 214 470 354 M420 214 170 355 M470 242 220 383 M520 270 270 412" stroke="currentColor" opacity=".12"/>
+    <ellipse cx="325" cy="325" rx="103" ry="26" fill="currentColor" opacity=".08"/>
+    <path d="m268 213-11 73 35 31m76-104 16 73-37 31" stroke="#343c36" stroke-width="23" stroke-linecap="round"/>
+    <path d="m266 311 51 13-8 18-68-11zm74 12 52-14 27 21-67 14z" fill="#cc6338" stroke="#353c36" stroke-width="3"/>
+    <rect x="239" y="153" width="159" height="91" rx="36" fill="#f7f3e9" stroke="#353c36" stroke-width="4"/>
+    <path d="m254 185 48 29 30-22" stroke="#353c36" stroke-width="4"/>
+    <circle cx="269" cy="215" r="15" fill="#cc6338" stroke="#353c36" stroke-width="4"/><circle cx="369" cy="215" r="15" fill="#cc6338" stroke="#353c36" stroke-width="4"/>
+    <rect x="281" y="70" width="97" height="102" rx="33" fill="#f7f3e9" stroke="#353c36" stroke-width="4"/>
+    <rect x="299" y="92" width="72" height="32" rx="15" fill="#353c36"/><circle cx="348" cy="107" r="5" fill="#b8c6a0"/>
+    <path d="m345 128 61 9-4 20-62-4" fill="#cc6338" stroke="#353c36" stroke-width="4"/>
+    <path d="m280 87-3-24" stroke="#353c36" stroke-width="4"/><circle cx="276" cy="59" r="7" fill="#cc6338"/>
+    <path d="M109 106h114l33 30m180 73h92m-92-5v10m92-10v10M140 279h80" stroke="currentColor" stroke-width="1.5" opacity=".6"/>
+    <text x="109" y="94" fill="currentColor" font-size="11" font-family="monospace">LEARN → TEST → ITERATE</text>
+    <text x="444" y="196" fill="currentColor" font-size="11" font-family="monospace">10 JOINTS</text>
+  </>}
+  {kind === 'arms' && <>
+    <ellipse cx="330" cy="337" rx="141" ry="24" fill="currentColor" opacity=".08"/>
+    <path d="m246 298 103-20 84 35-110 32-77-22Z" fill="#c2c1b4" stroke="#303a33" stroke-width="3"/>
+    <path d="M294 305v-62" stroke="#303a33" stroke-width="29"/><path d="m294 244-73-78 103-73 74 48" stroke="#303a33" stroke-width="25" stroke-linejoin="round"/>
+    <path d="m294 244-73-78 103-73 74 48" stroke="#f1eddf" stroke-width="17" stroke-linejoin="round"/>
+    <circle cx="294" cy="244" r="20" fill="#cc6338" stroke="#303a33" stroke-width="3"/><circle cx="221" cy="166" r="19" fill="#cc6338" stroke="#303a33" stroke-width="3"/><circle cx="324" cy="93" r="17" fill="#cc6338" stroke="#303a33" stroke-width="3"/>
+    <path d="m398 141 9 30-13 24m4-54 28 9 10 24" stroke="#303a33" stroke-width="9" stroke-linecap="round"/>
+    <rect x="435" y="244" width="102" height="67" rx="10" fill="#303a33"/><rect x="444" y="252" width="84" height="44" rx="5" fill="#d0d9c0"/>
+    <path d="M465 269v10m9-10v10m30-13-7 8 7 8" stroke="#303a33" stroke-width="3" stroke-linecap="round"/>
+    <path d="M437 280h-48l-39-36" stroke="currentColor" stroke-dasharray="5 5"/><path d="M113 156v123h119" stroke="currentColor" opacity=".5"/>
+    <text x="93" y="76" fill="currentColor" font-family="monospace" font-size="12">6 DEGREES OF FREEDOM</text><text x="429" y="335" fill="currentColor" font-family="monospace" font-size="11">TAP. EMOTE. REPEAT.</text>
+  </>}
+  {kind === 'manumentor' && <>
+    <path d="m169 121 152 69 151-92M169 264l152-74 151 104m-151-104 8 144" stroke="#738874" stroke-width="2"/>
+    <path d="m169 121 0 143 160 70 143-40V98Z" stroke="#738874" stroke-dasharray="4 6" opacity=".4"/>
+    <rect x="99" y="85" width="141" height="84" rx="8" fill="#f8f5ed" stroke="#536657" stroke-width="2"/>
+    <path d="M117 108h69m-69 13h98m-98 13h82m-82 13h46" stroke="#536657" stroke-width="3" opacity=".6"/>
+    <rect x="98" y="232" width="142" height="69" rx="8" fill="#f8f5ed" stroke="#536657" stroke-width="2"/>
+    <path d="M112 249h113m-113 17h113m-113 17h113m-88-40v46m42-46v46" stroke="#536657" opacity=".7"/>
+    <circle cx="321" cy="190" r="44" fill="#34483b"/><path d="m302 194 14-21 11 31 12-21" stroke="#d6e0c7" stroke-width="4" stroke-linejoin="round"/>
+    <circle cx="472" cy="98" r="18" fill="#cc6338"/><circle cx="472" cy="294" r="18" fill="#cc6338"/><circle cx="329" cy="334" r="11" fill="#536657"/>
+    <rect x="400" y="165" width="156" height="69" rx="8" fill="#f8f5ed" stroke="#536657" stroke-width="2"/>
+    <path d="m416 184 5 5 9-11m-14 30 5 5 9-11m12-17h92m-92 25h75" stroke="#536657" stroke-width="2"/>
+    <text x="98" y="70" fill="currentColor" font-family="monospace" font-size="11">DOCUMENTS</text><text x="98" y="322" fill="currentColor" font-family="monospace" font-size="11">TEST DATA</text><text x="400" y="254" fill="currentColor" font-family="monospace" font-size="11">GUIDED CHECKS</text>
+  </>}
+  {kind === 'hollow-knight' && <>
+    <rect x="83" y="76" width="259" height="206" rx="12" stroke="#b9c3ba" stroke-width="2"/>
+    <path d="M83 103h259m-232-14h4m9 0h4m9 0h4" stroke="#b9c3ba" stroke-width="3"/>
+    <rect x="107" y="126" width="93" height="59" rx="4" fill="#3e5146"/><rect x="219" y="126" width="93" height="59" rx="4" fill="#3e5146"/><rect x="107" y="203" width="93" height="59" rx="4" fill="#3e5146"/><rect x="219" y="203" width="93" height="59" rx="4" fill="#3e5146"/>
+    <path d="M137 154h33m-17-15v30m96-15h33m-17-15v30m-127 77h33m-17-15v30m96-15h33m-17-15v30" stroke="#d2ddc8" stroke-width="2" opacity=".8"/>
+    <path d="M343 160h59m-8-7 8 7-8 7m8 74h-59m8-7-8 7 8 7" stroke="#ee996c" stroke-width="2"/>
+    <rect x="411" y="120" width="137" height="149" rx="10" fill="#d4dbc7"/>
+    <path d="m435 164 42-19 43 21m-85-2 42 27 43-25m-85 56 42-31 43 31m-85-58v58m42-77v46m43-25v56" stroke="#526b58" stroke-width="1.5"/>
+    {[ [435,164],[477,145],[520,166],[477,191],[435,222],[520,222] ].map(([cx,cy])=><circle cx={cx} cy={cy} r="6" fill="#526b58"/>)}
+    <text x="114" y="314" fill="#d4dbc7" font-family="monospace" font-size="12">4 GAME INSTANCES</text><text x="424" y="294" fill="#d4dbc7" font-family="monospace" font-size="12">PPO POLICY</text><text x="356" y="144" fill="#ee996c" font-family="monospace" font-size="10">STATE</text><text x="352" y="259" fill="#ee996c" font-family="monospace" font-size="10">ACTION</text>
+  </>}
+</svg>

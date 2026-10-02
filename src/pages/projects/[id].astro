@@ -1,0 +1,24 @@
+---
+import { getCollection, render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Illustration from '../../components/Illustration.astro';
+export async function getStaticPaths() {
+  const projects = (await getCollection('projects')).sort((a,b)=>a.data.order-b.data.order);
+  return projects.map((project, i) => ({ params: { id: project.id }, props: { project, next: projects[(i+1)%projects.length] } }));
+}
+interface Props { project: CollectionEntry<'projects'>; next: CollectionEntry<'projects'>; }
+const { project, next } = Astro.props;
+const { data } = project;
+const { Content } = await render(project);
+---
+<Layout title={`${data.title} — Abbas Quettawala`} description={data.summary}>
+  <div class="container case-study">
+    <a class="text-link back-link" href="/#work">← All projects</a>
+    <header class="case-header"><p class="eyebrow">CASE STUDY 0{data.order} / {data.category.toUpperCase()}</p><h1>{data.title}<span class="orange">.</span></h1><p class="case-subtitle">{data.subtitle}</p><p class="case-summary">{data.summary}</p><ul class="tags">{data.tags.map(tag=><li>{tag}</li>)}</ul></header>
+    <div class={`case-visual project-${data.illustration}`}><Illustration kind={data.illustration}/><p class="eyebrow">ORIGINAL CONCEPT ILLUSTRATION · NOT PROJECT FOOTAGE</p></div>
+    <div class="case-layout"><aside class="case-facts"><div><h2>CONTEXT</h2><p>{data.organisation}</p></div><div><h2>MY ROLE</h2><p>{data.role}</p></div><div><h2>STATUS</h2><p>{data.status}</p></div><a class="text-link" href="mailto:abbasquettawalla@gmail.com">Ask me about it ↗</a></aside><article class="prose"><Content /></article></div>
+    {data.media.length > 0 && <section class="case-gallery" aria-label="Project media">{data.media.map(media=><figure>{media.type === 'image' ? <img src={media.src} alt={media.alt} loading="lazy" decoding="async" /> : <video controls preload="none" poster={media.poster} aria-label={media.alt}><source src={media.src} />{media.captions && <track kind="captions" src={media.captions} srclang="en" label="English" default />}Your browser does not support this video. <a href={media.src}>Download it instead.</a></video>}<figcaption>{media.caption}</figcaption></figure>)}</section>}
+    <a class="next-project" href={`/projects/${next.id}/`}><span class="eyebrow">NEXT ON THE WORKBENCH</span><span>{next.data.title} <span aria-hidden="true">↗</span></span></a>
+  </div>
+</Layout>
