@@ -3,6 +3,26 @@ import AxeBuilder from '@axe-core/playwright';
 
 const slugs = ['waddle', 'robotic-arms', 'manumentor', 'hollow-knight'];
 
+test('About section presents reviewed personal photos across screen sizes',async({page,request})=>{
+  for(const width of [375,768,1440]){
+    await page.setViewportSize({width,height:1000});
+    await page.goto('/#about');
+    await expect(page.locator('#about img')).toHaveCount(3);
+    await expect(page.locator('#about .about-monogram')).toHaveCount(0);
+    for(const img of await page.locator('#about img').all()){
+      await img.scrollIntoViewIfNeeded();
+      await expect(img).toHaveAttribute('loading','lazy');
+      await expect.poll(()=>img.evaluate((el:HTMLImageElement)=>el.complete&&el.naturalWidth>0)).toBeTruthy();
+      expect((await img.getAttribute('alt'))?.length).toBeGreaterThan(20);
+    }
+    for(const link of await page.locator('#about a[href^="/media/about/"]').all()){
+      expect((await request.get((await link.getAttribute('href'))!)).ok()).toBeTruthy();
+    }
+    expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBeTruthy();
+    await page.locator('#about').screenshot({path:`test-results/about-${width}.png`});
+  }
+});
+
 test('homepage, filtering, resume and contact', async ({ page, request }) => {
   const errors: string[] = [];
   page.on('pageerror', e=>errors.push(e.message));
