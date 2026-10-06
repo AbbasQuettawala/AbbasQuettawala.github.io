@@ -59,6 +59,43 @@ test('every case study loads directly, refreshes and links onward', async ({ pag
   }
 });
 
+test('Waddle has a full interview, a 60-second CAD tour and labelled simulation media', async ({page,request})=>{
+  test.setTimeout(90_000);
+  await page.goto('/');
+  await expect(page.locator('.project-waddle .project-image img')).toHaveAttribute('src','/media/waddle/showcase-card.webp');
+  await page.goto('/projects/waddle/');
+  await expect(page.locator('.case-photo img')).toBeVisible();
+  await page.getByRole('link',{name:'See photos & demonstrations ↓'}).click();
+  await expect(page.locator('.case-gallery video')).toHaveCount(6);
+  await expect(page.locator('.media-featured video')).toHaveCount(1);
+  const durations=[345.45,60,50,184.97,35.7,14.4];
+  for (const [i,video] of (await page.locator('.case-gallery video').all()).entries()) {
+    await expect(video).toHaveAttribute('preload','none');
+    expect(await video.getAttribute('autoplay')).toBeNull();
+    expect(await video.getAttribute('controls')).not.toBeNull();
+    expect((await request.get((await video.getAttribute('poster'))!)).ok()).toBeTruthy();
+    await video.evaluate((el:HTMLVideoElement)=>{el.muted=true;el.load();});
+    await expect.poll(()=>video.evaluate((el:HTMLVideoElement)=>el.readyState)).toBeGreaterThanOrEqual(2);
+    const duration=await video.evaluate((el:HTMLVideoElement)=>el.duration);
+    expect(Math.abs(duration-durations[i])).toBeLessThan(0.2);
+    await video.evaluate((el:HTMLVideoElement)=>el.play());
+    await expect.poll(()=>video.evaluate((el:HTMLVideoElement)=>el.currentTime)).toBeGreaterThan(0.05);
+    await video.evaluate((el:HTMLVideoElement)=>{el.pause();el.currentTime=el.duration-1;});
+    await expect.poll(()=>video.evaluate((el:HTMLVideoElement)=>!el.seeking&&el.readyState>=2)).toBeTruthy();
+  }
+  const captions=page.locator('.media-featured track');
+  await expect(captions).toHaveAttribute('label','English (auto-generated)');
+  const vtt=await request.get((await captions.getAttribute('src'))!);
+  expect(vtt.ok()).toBeTruthy();
+  expect(await vtt.text()).toContain('WEBVTT');
+  for (const width of [375,768,1440]) {
+    await page.setViewportSize({width,height:1000});
+    await page.locator('.media-featured').scrollIntoViewIfNeeded();
+    expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBeTruthy();
+    await page.screenshot({path:`test-results/waddle-${width}.png`});
+  }
+});
+
 test('robotic arms uses real photographs and playable, opt-in demonstration clips', async ({page,request})=>{
   test.setTimeout(90_000);
   await page.goto('/');

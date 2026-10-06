@@ -36,6 +36,7 @@
 .case-photo figcaption{font:12px/1.6 var(--mono);color:var(--muted);margin-top:12px}
 .case-gallery{grid-template-columns:repeat(2,minmax(0,1fr));gap:30px;padding-top:35px;border-top:1px solid var(--line)}
 .gallery-heading{grid-column:1/-1;margin-bottom:6px;max-width:660px}
+.case-gallery .media-featured{grid-column:1/-1}
 .gallery-heading h2{font-size:40px;margin:14px 0 16px}
 .gallery-heading>p:last-child{font-size:14px;color:var(--muted)}
 .case-gallery img,.case-gallery video{display:block;aspect-ratio:16/9;object-fit:contain;background:#1e241f}

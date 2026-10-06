@@ -15,6 +15,7 @@ const projects = defineCollection({
     status: z.string(),
     tags: z.array(z.string()),
     illustration: z.enum(['waddle', 'arms', 'manumentor', 'hollow-knight']),
+    mediaIntroduction: z.string().optional(),
     cover: z.object({
       src: z.string(),
       thumbnail: z.string().optional(),
@@ -30,6 +31,8 @@ const projects = defineCollection({
       caption: z.string(),
       poster: z.string().optional(),
       captions: z.string().optional(),
+      captionLabel: z.string().default('English'),
+      featured: z.boolean().default(false),
       silent: z.boolean().default(false),
     })).default([]),
   }),
